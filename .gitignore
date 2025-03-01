@@ -5,3 +5,8 @@ node_modules
 .DS_Store
 .idea
 .vscode
+#python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
