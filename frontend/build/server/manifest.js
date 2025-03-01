@@ -10,11 +10,11 @@ return {
 	assets: new Set(["favicon.png","images/android-chrome-192x192.png","images/android-chrome-512x512.png","images/apple-touch-icon.png","images/favicon-16x16.png","images/favicon-32x32.png","images/favicon.ico","images/foodlyze-high-resolution-logo.png"]),
 	mimeTypes: {".png":"image/png"},
 	_: {
-		client: {start:"_app/immutable/entry/start.BfDA6OXL.js",app:"_app/immutable/entry/app.DJCttR-M.js",imports:["_app/immutable/entry/start.BfDA6OXL.js","_app/immutable/chunks/BsDXvnjp.js","_app/immutable/chunks/0h3qGrbY.js","_app/immutable/chunks/Bl0eu5LI.js","_app/immutable/entry/app.DJCttR-M.js","_app/immutable/chunks/0h3qGrbY.js","_app/immutable/chunks/CMkbe_t9.js","_app/immutable/chunks/CCwIHrBy.js","_app/immutable/chunks/OmnV9Bkp.js","_app/immutable/chunks/Bl0eu5LI.js"],stylesheets:[],fonts:[],uses_env_dynamic_public:false},
+		client: {start:"_app/immutable/entry/start.BmsksOli.js",app:"_app/immutable/entry/app.D9CQQnFB.js",imports:["_app/immutable/entry/start.BmsksOli.js","_app/immutable/chunks/ModyhvZS.js","_app/immutable/chunks/DSwFemxF.js","_app/immutable/chunks/DSAqiy82.js","_app/immutable/entry/app.D9CQQnFB.js","_app/immutable/chunks/DSwFemxF.js","_app/immutable/chunks/CcviYXUN.js","_app/immutable/chunks/a2Wh04Ca.js","_app/immutable/chunks/DJ1xygrn.js","_app/immutable/chunks/DSAqiy82.js"],stylesheets:[],fonts:[],uses_env_dynamic_public:false},
 		nodes: [
-			__memo(() => import('./chunks/0-DOsKGopq.js')),
-			__memo(() => import('./chunks/1-DRaVbpjn.js')),
-			__memo(() => import('./chunks/2-BYDQbtKM.js'))
+			__memo(() => import('./chunks/0-C7Dog5rC.js')),
+			__memo(() => import('./chunks/1-Asm720MV.js')),
+			__memo(() => import('./chunks/2-CNOBHM-X.js'))
 		],
 		routes: [
 			{
