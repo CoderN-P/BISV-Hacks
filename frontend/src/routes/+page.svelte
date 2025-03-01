@@ -91,7 +91,7 @@
     
     async function fetchData() {
         if (!barcodeResult) return;
-        if (foodData) return;
+        if (foodData != null) return;
         
         const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/items/${barcodeResult}`);
         

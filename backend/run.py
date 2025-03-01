@@ -47,16 +47,19 @@ def read_item(code: str, response: Response):
     if data.get("nutrition-score-uk_100g"):
         data["nutrition_score"] = data.pop("nutrition-score-uk_100g")
 
-
-    if not data:
-        return {"error": "No data found"}, 404
-
-    return data
+    return Item(**data)
 
 @app.post("/summary")
-def summarize_item(request: FoodRequest):
+def summarize_item(request: FoodRequest, response: Response):
 
-    res = generate_food_response(request)
+    try:
+        res = generate_food_response(request)
+    except Exception as e:
+        try:
+            res = generate_food_response(request)
+        except Exception as exc:
+            response.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+            return {"error": str(exc)}
 
     data = {
         "description": res.description,
