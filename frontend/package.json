@@ -4,9 +4,9 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-		"dev": "vite dev",
-		"build": "vite build",
-		"start": "node server.js",
+		"dev": "vite dev --host 0.0.0.0",
+		"build": "NODE_OPTIONS=--max-old-space-size=8192 NODE_ENV=production vite build",
+		"production": "pm2 start server.js --name \"production\"",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
