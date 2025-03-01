@@ -4,10 +4,10 @@ from dotenv import load_dotenv
 
 
 load_dotenv()
-from fastapi import FastAPI
+from fastapi import FastAPI, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 
-from get_response import generate_food_response
+from get_response import generate_food_response, FoodRequest
 from Item import Item
 
 app = FastAPI()
@@ -35,10 +35,13 @@ def read_root():
 
 
 @app.get("/items/{code}")
-def read_item(code: str):
+def read_item(code: str, response: Response):
     product_fields = ["code", "product_name", "ingredients_text", "image_url", "nutrition-score-uk_100g", "energy-kcal_100g"]
     data = api.product.get(code, fields=product_fields)
 
+    if data is None:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return {"error": "Product not found"}
     if data.get("energy-kcal_100g"):
         data["kcal"] = data.pop("energy-kcal_100g")
     if data.get("nutrition-score-uk_100g"):
@@ -51,9 +54,9 @@ def read_item(code: str):
     return data
 
 @app.post("/summary")
-def summarize_item(item: Item):
+def summarize_item(request: FoodRequest):
 
-    res = generate_food_response(item)
+    res = generate_food_response(request)
 
     data = {
         "description": res.description,

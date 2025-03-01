@@ -10,6 +10,8 @@
 
     let barcodeResult = $state(null);
     
+    let scannedBarcodes = $state(new Set());
+    
     let availableDevices = [];
     
     let selectedDevice = $state(null);
@@ -19,8 +21,12 @@
     let started = $state(false);
     
     let foodData = $state(null);
+
+    let invalid_barcode = $state(false);
     
-    
+    function delay(ms: number) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
     
     onMount(() => {
         const codeReader = new ZXing.BrowserMultiFormatReader();
@@ -40,8 +46,12 @@
                     started = true;
                     console.log(started)
                     codeReader.decodeFromVideoDevice(selectedDevice.id, 'video', (result, err) => {
-                        console.log(result)
-                        if (result) {
+                        if(result != null){
+                            console.log(result)
+                        }
+                        if (result && !scannedBarcodes.has(result.getText())) {
+                            scannedBarcodes.add(result.getText());
+                            console.log(scannedBarcodes)
                             barcodeResult = result
                             fetchData();
                         }
@@ -74,8 +84,12 @@
         const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/items/${barcodeResult}`);
         
         if (res.ok) {
+            invalid_barcode = false;
             const data = await res.json();
             foodData = data;
+        }else{
+            invalid_barcode = true;
+            throw new Error("Failed to fetch data")
         }
         
         gptResponse = getGPTResponse();
@@ -90,7 +104,7 @@
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(foodData)
+            body: JSON.stringify({item: foodData, request_type: "recipe"})
         });
         
         if (res.ok) {
@@ -115,7 +129,9 @@
         </div>
         
         <p class="text-lg text-gray-600 mt-1">Understand your food. Scan the barcode label to get started!</p>
-
+        {#if invalid_barcode}
+            <p class="p-4 text-red-500 mt-1">Invalid barcode!</p>
+        {/if}
         {#if !foodData}
             <div class="flex flex-row items-center gap-4 mt-8">
                 {#if started}

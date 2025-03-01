@@ -1,4 +1,5 @@
 import json
+from typing import Literal
 
 from openai import OpenAI
 from pydantic import BaseModel
@@ -14,10 +15,16 @@ class FoodResponse(BaseModel):
     recommended_products: List[str]
     description: str
 
+class FoodRequest(BaseModel):
+    #recipe: recommend recipes, nutrition: summarize nutrition info, summary: explain what product is
+    request_type: Literal["recipe", "nutrition", "summary"]
+    item: Item
 
 # Function to generate response
-def generate_food_response(item: Item) -> FoodResponse:
-    with open("backend/GPT_SYSTEM_PROMPT.txt", "r", encoding="utf-8") as f:
+def generate_food_response(request: FoodRequest) -> FoodResponse:
+    assert(isinstance(request, FoodRequest))
+    item = request.item
+    with open("GPT_SYSTEM_PROMPT.txt", "r", encoding="utf-8") as f:
         system_prompt = f.read()
     user_prompt = ""
 
