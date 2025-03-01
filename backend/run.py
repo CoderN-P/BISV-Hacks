@@ -78,9 +78,15 @@ def summarize_item(request: FoodRequest, response: Response):
     data = {
         "description": res.description,
         "recommended_products": res.recommended_products,
-        "fat": res.fat,
+        "fat": {
+            "summary": res.fat.summary,
+            "score": res.fat.score.value,
+        },
         "score": res.score,
-        "calories": res.calories
+        "calories": {
+            "summary": res.calories.summary,
+            "score": res.calories.score.value,
+        }
     }
 
     return data

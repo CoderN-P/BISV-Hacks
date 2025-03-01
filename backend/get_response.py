@@ -5,16 +5,24 @@ from openai import OpenAI
 from pydantic import BaseModel
 from typing import List
 from Item import Item
+from enum import Enum
 
 
 client = OpenAI()
 
+class IngredientScore(Enum):
+    GOOD = "good"
+    MID = "mid"
+    BAD = "bad"
 
+class IngredientSummary(BaseModel):
+    summary: str
+    score: IngredientScore
 # Response model (OpenAI Structured Data)
 class FoodResponse(BaseModel):
     recommended_products: List[str]
-    fat: str
-    calories: str
+    fat: IngredientSummary
+    calories: IngredientSummary
     description: str
     score: float
 

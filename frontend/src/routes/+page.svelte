@@ -95,6 +95,8 @@
         }
     }
     
+   
+    
     
     async function getGPTResponse(type: string="recipe"){
         if (!barcodeResult) return;
@@ -236,11 +238,22 @@
                             <div class="flex flex-row gap-2 items-center">
                                 <Flame class="w-8 h-8 text-red-500"/>
                                 <p class="text-xl font-semibold">Calories</p>
+                                {#if gptResponse}
+                                    {#if gptResponse.calories.score === "good"}
+                                        <p class="text-lg text-green-500">healthy</p>
+                                    {:else if gptResponse.calories.score === "bad"}
+                                        <p class="text-lg text-red-500">unhealthy</p>
+                                    {:else}
+                                        <p class="text-lg text-orange-500">mid</p>
+                                    {/if}
+                                {:else}
+                                    <Skeleton class="bg-gray-100 w-16 h-4"/>
+                                {/if}
                             </div>
                             <p class="text-xl float-right text-gray-600">{foodData.kcal} kcal</p>
                         </div>
                         {#if gptResponse}
-                            <p class="text-sm text-gray-500">{gptResponse.calories}</p>
+                            <p class="text-sm text-gray-500">{gptResponse.calories.summary}</p>
                         {:else}
                             <Skeleton class="bg-gray-100 w-56 h-4"/>
                         {/if}
@@ -251,11 +264,22 @@
                             <div class="flex flex-row gap-2 items-center">
                                 <CakeSlice class="w-8 h-8 text-orange-500"/>
                                 <p class="text-xl font-semibold"> Fat</p>
+                                {#if gptResponse}
+                                    {#if gptResponse.fat.score === "good"}
+                                        <p class="text-lg text-green-500">healthy</p>
+                                    {:else if gptResponse.fat.score === "bad"}
+                                        <p class="text-lg text-red-500">unhealthy</p>
+                                    {:else}
+                                        <p class="text-lg text-orange-500">mid</p>
+                                    {/if}
+                                {:else}
+                                    <Skeleton class="bg-gray-100 w-16 h-4"/>
+                                {/if}
                             </div>
                             <p class="text-xl float-right text-gray-600">{foodData.fat_100g} g</p>
                         </div>
                         {#if gptResponse}
-                            <p class="text-sm text-gray-500">{gptResponse.fat}</p>
+                            <p class="text-sm text-gray-500">{gptResponse.fat.summary}</p>
                         {:else}
                             <Skeleton class="bg-gray-100 w-56 h-4"/>
                         {/if}
