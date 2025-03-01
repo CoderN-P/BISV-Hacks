@@ -3,6 +3,8 @@ from typing import Union
 
 class Item(BaseModel):
     code: str = ""
+    url: str = ""
+    sugars_100g: float = 0
     product_name: str = ""
     ingredients_text: str = ""
     image_url: str = ""

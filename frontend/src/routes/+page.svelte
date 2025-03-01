@@ -2,7 +2,7 @@
     import * as ZXing from '@zxing/library';
     import { Button} from "$lib/components/ui/button";
     import { onMount } from "svelte";
-    import { ArrowLeft, Dot, Flame, CakeSlice } from "lucide-svelte";
+    import {ArrowLeft, Dot, Flame, CakeSlice, Box, ArrowUp} from "lucide-svelte";
     import MarkdownRenderer from "$lib/components/markdownRenderer.svelte";
     import { Input } from "$lib/components/ui/input";
     import * as Select from "$lib/components/ui/select";
@@ -61,12 +61,13 @@
     function returnHome() {
         foodData = null;
         gptResponse = null;
+        barcodeResult = null;
+        foodError = false;
         initializeScanner();
     }
 
     
     function onSelectedChange(event) {
-        console.log(event)
         selectedDevice = {
             id: event.value,
             label: event.label
@@ -144,10 +145,18 @@
                    </Select.Content>
                </Select.Root>
                   {/if}
-                <div class="flex flex-row w-full justify-center">
-                    <Button variant="primary" class="hover:bg-gray-800 bg-black text-white rounded-full" id="startButton">Start Scanning</Button>
-                </div>
-                
+             
+                    <div class="flex flex-row w-full items-center ">
+                        
+                        <Button variant="primary" class="hover:bg-gray-800 mr-4 bg-black text-white rounded-full" id="startButton">Start Scanning</Button>
+                        {#if !started}
+                            <p class="font-medium text-lg mr-4 ">OR</p>
+                        <Input bind:value={barcodeResult} placeholder="Enter code" class="w-1/2 mr-2 rounded-full "/>
+                            <button on:click={fetchData} disabled={!barcodeResult} class=" rounded-full bg-green-500 flex p-2 items-center">
+                                <ArrowUp class="text-white "/>
+                            </button>
+                        {/if}
+                    </div>
             </div>
 
             {#if started}
@@ -164,7 +173,7 @@
                 
                 <p class="text-2xl font-semibold mt-4">How does it work?</p>
                 <p class="text-base text-gray-500 mb-8">
-                    Click the "Start Scanning" button to begin scanning the barcode of a food item. Once the barcode is scanned, Foodlyze will provide you with information about the food item, including its name, ingredients, and nutritional information. If you would like to learn more about the food item, click the "View Source" link to view the product on Open Food Facts.
+                    Click the "Start Scanning" button to begin scanning the barcode of a food item. Once the barcode is scanned, Foodlyze will provide you with information about the food item, including its name, ingredients, and nutritional information. 
                 </p>
             </div>
         {:else if loadingFoodData}
@@ -194,6 +203,7 @@
                         <div class="flex flex-row gap-4 items-center">
                             <p class="text-lg text-gray-500">{foodData.code}</p> 
                             <Dot class="w-6 text-gray-500 h-6"/>
+                            {foodData.url}
                             <a href={foodData.url} class="text-lg text-blue-500 hover:underline hover:text-blue-600">View Source</a>
                         </div>
                     </div>
@@ -284,6 +294,32 @@
                             <Skeleton class="bg-gray-100 w-56 h-4"/>
                         {/if}
                     </div>
+
+                    <div class="flex flex-col w-full border-t border-gray-200  p-4 gap-2">
+                        <div class="flex flex-row gap-2 items-center justify-between">
+                            <div class="flex flex-row gap-2 items-center">
+                                <Box class="w-8 h-8 text-blue-500"/>
+                                <p class="text-xl font-semibold">Sugar</p>
+                                {#if gptResponse}
+                                    {#if gptResponse.sugars.score === "good"}
+                                        <p class="text-lg text-green-500">healthy</p>
+                                    {:else if gptResponse.sugars.score === "bad"}
+                                        <p class="text-lg text-red-500">unhealthy</p>
+                                    {:else}
+                                        <p class="text-lg text-orange-500">mid</p>
+                                    {/if}
+                                {:else}
+                                    <Skeleton class="bg-gray-100 w-16 h-4"/>
+                                {/if}
+                            </div>
+                            <p class="text-xl float-right text-gray-600">{foodData.sugars_100g} g</p>
+                        </div>
+                        {#if gptResponse}
+                            <p class="text-sm text-gray-500">{gptResponse.sugars.summary}</p>
+                        {:else}
+                            <Skeleton class="bg-gray-100 w-56 h-4"/>
+                        {/if}
+                    </div>
                 </div>
                 
                 <div class="w-full mt-4 flex flex-col">
@@ -291,7 +327,7 @@
                         <p class="text-2xl font-semibold">Summary</p>
                         <MarkdownRenderer md={gptResponse.description}/>
                         
-                        <p class="text-2xl font-semibold mt-4">Similar products</p>
+                        <p class="text-2xl font-semibold mt-4">Recommended additions</p>
                         <div class="flex flex-wrap gap-2 mt-4 mb-4">
                             {#each gptResponse.recommended_products as product}
                                 <div class="bg-gray-100 border border-gray-200 rounded-full p-2">

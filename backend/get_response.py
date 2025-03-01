@@ -18,11 +18,13 @@ class IngredientScore(Enum):
 class IngredientSummary(BaseModel):
     summary: str
     score: IngredientScore
+    
 # Response model (OpenAI Structured Data)
 class FoodResponse(BaseModel):
     recommended_products: List[str]
     fat: IngredientSummary
     calories: IngredientSummary
+    sugars: IngredientSummary
     description: str
     score: float
 

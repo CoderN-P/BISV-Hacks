@@ -49,7 +49,9 @@ def get_item(code: str, response: Response):
                       "fluoride_100g",
                       "selenium_100g",
                       "chromium_100g",
-                        "fat_100g",
+                    "fat_100g",
+                      "sugars_100g",
+                      "url"
                     ]
     data = api.product.get(code, fields=product_fields)
 
@@ -86,7 +88,11 @@ def summarize_item(request: FoodRequest, response: Response):
         "calories": {
             "summary": res.calories.summary,
             "score": res.calories.score.value,
-        }
+        },
+        "sugars": {
+            "summary": res.sugars.summary,
+            "score": res.sugars.score.value,
+        },
     }
 
     return data
