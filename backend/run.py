@@ -35,8 +35,22 @@ def read_root():
 
 
 @app.get("/items/{code}")
-def read_item(code: str, response: Response):
-    product_fields = ["code", "product_name", "ingredients_text", "image_url", "nutrition-score-uk_100g", "energy-kcal_100g"]
+def get_item(code: str, response: Response):
+    product_fields = ["code", "product_name", "ingredients_text", "image_url", "nutrition-score-uk_100g", "energy-kcal_100g", "bicarbonate_100g", 
+                      "potassium_100g",
+                      "chloride_100g",
+                      "calcium_100g",
+                      "phosphorus_100g",
+                      "iron_100g",
+                      "magnesium_100g",
+                      "zinc_100g",
+                      "copper_100g",
+                      "manganese_100g",
+                      "fluoride_100g",
+                      "selenium_100g",
+                      "chromium_100g",
+                        "fat_100g",
+                    ]
     data = api.product.get(code, fields=product_fields)
 
     if data is None:
@@ -63,7 +77,10 @@ def summarize_item(request: FoodRequest, response: Response):
 
     data = {
         "description": res.description,
-        "recommended_products": res.recommended_products
+        "recommended_products": res.recommended_products,
+        "fat": res.fat,
+        "score": res.score,
+        "calories": res.calories
     }
 
     return data

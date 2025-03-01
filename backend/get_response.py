@@ -13,7 +13,10 @@ client = OpenAI()
 # Response model (OpenAI Structured Data)
 class FoodResponse(BaseModel):
     recommended_products: List[str]
+    fat: str
+    calories: str
     description: str
+    score: float
 
 class FoodRequest(BaseModel):
     #recipe: recommend recipes, nutrition: summarize nutrition info, summary: explain what product is
@@ -26,7 +29,7 @@ def generate_food_response(request: FoodRequest) -> FoodResponse:
     item = request.item
     with open(f"GPT_SYSTEM_PROMPT_{request.request_type.upper()}.txt", "r", encoding="utf-8") as f:
         system_prompt = f.read()
-    user_prompt = ""
+    
 
     user_prompt = item.model_dump_json()
 
@@ -43,7 +46,7 @@ def generate_food_response(request: FoodRequest) -> FoodResponse:
             },
         ],
         temperature=1,
-        max_tokens=500,
+        max_tokens=1000,
         top_p=1,
         response_format=FoodResponse,
     )
