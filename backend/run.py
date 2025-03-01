@@ -36,17 +36,18 @@ def read_root():
 
 @app.get("/items/{code}")
 def read_item(code: str):
-    data = api.product.get(code, fields=["code", "product_name", "ingredients_text", "image_url", "nutrition-score-uk_100g", "energy-kcal_100g"])
-    
+    product_fields = ["code", "product_name", "ingredients_text", "image_url", "nutrition-score-uk_100g", "energy-kcal_100g"]
+    data = api.product.get(code, fields=product_fields)
+
     if data.get("energy-kcal_100g"):
         data["kcal"] = data.pop("energy-kcal_100g")
     if data.get("nutrition-score-uk_100g"):
         data["nutrition_score"] = data.pop("nutrition-score-uk_100g")
-        
-        
+
+
     if not data:
         return {"error": "No data found"}, 404
- 
+
     return data
 
 @app.post("/summary")
@@ -58,8 +59,5 @@ def summarize_item(item: Item):
         "description": res.description,
         "recommended_products": res.recommended_products
     }
-    
+
     return data
-    
-
-
