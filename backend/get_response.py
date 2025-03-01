@@ -24,7 +24,7 @@ class FoodRequest(BaseModel):
 def generate_food_response(request: FoodRequest) -> FoodResponse:
     assert(isinstance(request, FoodRequest))
     item = request.item
-    with open("GPT_SYSTEM_PROMPT.txt", "r", encoding="utf-8") as f:
+    with open(f"GPT_SYSTEM_PROMPT_{request.request_type.upper()}.txt", "r", encoding="utf-8") as f:
         system_prompt = f.read()
     user_prompt = ""
 

@@ -40,7 +40,7 @@ Follow these guidelines:
 4. **Formatting and Clarity**  
    - Present your recommendations using clear headings and a logical structure to ensure ease of reading.  
    - Use bullet points or numbered steps in the instructions to enhance clarity.
-   - Put any other ingredients needed for the recipe in the recommended products field of your response
+   - Put any other ingredients needed for the recipe in the recommended products field of your response and list their amounts
 
 5. **Creativity and Flexibility**  
    - Leverage your culinary expertise to creatively integrate the product into delicious, practical recipes.  

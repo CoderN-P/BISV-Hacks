@@ -7,10 +7,12 @@
     import * as Select from "$lib/components/ui/select";
     import { Skeleton } from "$lib/components/ui/skeleton";
     import { Switch } from "$lib/components/ui/switch";
+	import { get } from 'svelte/store';
+	import { LOG } from '@zxing/library/esm/core/datamatrix/encoder/constants';
 
-    let barcodeResult = $state(null);
+    let barcodeResult: any | null = $state(null);
     
-    let scannedBarcodes = $state(new Set());
+    let invalidBarcodes = $state(new Set());
     
     let availableDevices = [];
     
@@ -23,6 +25,12 @@
     let foodData = $state(null);
 
     let invalid_barcode = $state(false);
+
+    let productFound = $state(false);
+
+    let gptSummary = $state(null);
+    let gptRecipe = $state(null);
+    let gptResponses: boolean = $state(false);
     
     function delay(ms: number) {
         return new Promise(resolve => setTimeout(resolve, ms));
@@ -49,11 +57,15 @@
                         if(result != null){
                             console.log(result)
                         }
-                        if (result && !scannedBarcodes.has(result.getText())) {
-                            scannedBarcodes.add(result.getText());
-                            console.log(scannedBarcodes)
+                        if (result && !invalidBarcodes.has(result.getText())) {
+                            console.log(invalidBarcodes)
                             barcodeResult = result
-                            fetchData();
+                            try {
+                                fetchData();
+                            } catch (e) {
+                                console.error(e)
+                                invalidBarcodes.add(result.getText());
+                            }
                         }
                         if (err && !(err instanceof ZXing.NotFoundException)) {
                             console.error(err)
@@ -91,12 +103,11 @@
             invalid_barcode = true;
             throw new Error("Failed to fetch data")
         }
-        
-        gptResponse = getGPTResponse();
+        productFound = true;
     }
     
     
-    async function getGPTResponse(){
+    async function getGPTResponse(type: string="recipe"){
         if (!barcodeResult) return;
         
         const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/summary`, {
@@ -104,20 +115,29 @@
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({item: foodData, request_type: "recipe"})
+            body: JSON.stringify({item: foodData, request_type: type})
         });
         
         if (res.ok) {
             const data = await res.json();
-            gptResponse = data;
+            return data
         } else {
             throw new Error("Failed to fetch data")
         }
     }
                 
-   
-</script>
+    $effect(() => {
+        if (productFound) {
+            fetchGPTResponses();
+        }
+    });
 
+    async function fetchGPTResponses() {
+        gptSummary = await getGPTResponse("summary");
+        gptRecipe = await getGPTResponse("recipe");
+        gptResponses = true;
+    }
+</script>
 <div class="w-screen h-screen">
     <div class="max-w-xl px-4 mx-auto mb-4 flex flex-col h-full">
         <div class="flex gap-2 flex-row items-center justify-between mt-8">
@@ -130,7 +150,9 @@
         
         <p class="text-lg text-gray-600 mt-1">Understand your food. Scan the barcode label to get started!</p>
         {#if invalid_barcode}
-            <p class="p-4 text-red-500 mt-1">Invalid barcode!</p>
+            <div class="flex flex-row items-center gap-2 mt-4">
+                <p class="text-lg text-red-500">Invalid barcode. Please try again.</p>
+            </div>
         {/if}
         {#if !foodData}
             <div class="flex flex-row items-center gap-4 mt-8">
@@ -195,22 +217,30 @@
                 </div>
                 
                 <div class="w-full mt-4 flex flex-col">
-                    {#if gptResponse}
+                    {#if gptResponses}
                         <p class="text-2xl font-semibold">Summary</p>
-                        <p class="text-base text-gray-500">{gptResponse.description}</p>
+                        <p class="text-base text-gray-500">{gptSummary?.description}</p>
                         
                         <p class="text-2xl font-semibold mt-4">Similar products</p>
                         <div class="flex flex-wrap gap-2 mt-4">
-                            {#each gptResponse.recommended_products as product}
+                            {#each gptSummary?.recommended_products as product}
                                 <div class="bg-gray-100 border border-gray-200 rounded-full p-2">
                                     <p class="text-sm">{product}</p>
                                 </div>
                             {/each}
                         </div>
-                    {:else }
-                        <Skeleton class="w-1/2 h-4"/>
-                        <Skeleton class="w-2/3 h-4"/>
-                        <Skeleton class="w-1/2 h-4"/>
+                        <p class="text-2xl font-semibold mt-4">Recipe</p>
+                        <p class="text-base text-gray-500">{gptRecipe?.description}</p>
+
+                        <div class="flex flex-col gap-2 mt-4">
+                            <p class="text-xl font-semibold">Ingredients</p>
+                            <ul class="list-disc list-inside">
+                                {#each gptRecipe?.recommended_products as ingredient}
+                                    <li>{ingredient}</li>
+                                {/each}
+                            </ul>
+                        </div>
+                    
                     {/if}
                 </div>
                     
