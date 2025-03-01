@@ -7,3 +7,4 @@ class Item(BaseModel):
     ingredients_text: str = ""
     image_url: str = ""
     nutrition_score: str = ""
+    kcal: Union[int, float] = 0

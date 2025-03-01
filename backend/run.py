@@ -36,8 +36,10 @@ def read_root():
 
 @app.get("/items/{code}")
 def read_item(code: str):
-    data = api.product.get(code, fields=["code", "product_name", "ingredients_text", "image_url", "nutrition-score-uk_100g"])
+    data = api.product.get(code, fields=["code", "product_name", "ingredients_text", "image_url", "nutrition-score-uk_100g", "energy-kcal_100g"])
     
+    if data.get("energy-kcal_100g"):
+        data["kcal"] = data.pop("energy-kcal_100g")
     if data.get("nutrition-score-uk_100g"):
         data["nutrition_score"] = data.pop("nutrition-score-uk_100g")
         

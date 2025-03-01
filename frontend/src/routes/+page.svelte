@@ -105,7 +105,7 @@
 </script>
 
 <div class="w-screen h-screen">
-    <div class="max-w-xl px-4 mx-auto flex flex-col h-full">
+    <div class="max-w-xl px-4 mx-auto mb-4 flex flex-col h-full">
         <div class="flex gap-2 flex-row items-center justify-between mt-8">
             <div class="flex flex-row gap-2 items-center">
                 <img src="/images/foodlyze-high-resolution-logo.png" class="rounded-full h-10 w-10"/>
@@ -159,17 +159,22 @@
                 <p class="text-lg text-green-500 hover:underline hover:text-green-600">Return Home</p>
             </button>
             <div class="flex flex-col gap-1 mt-8">
-                <p class="text-3xl font-semibold">{foodData.product_name}</p>
-                <div class="flex flex-row gap-2 items-center">
-                    <p class="text-lg text-gray-500">{foodData.code}</p> 
-                    <Dot class="w-6 text-gray-500 h-6"/>
-                    <a href={foodData.url} class="text-lg text-blue-500 hover:underline hover:text-blue-600">View Source</a>
+                <div class="flex flex-row justify-between w-full items-center">
+                    <div class="flex flex-col gap-1">
+                        <p class="text-3xl font-semibold">{foodData.product_name}</p>
+                        <div class="flex flex-row gap-2 items-center">
+                            <p class="text-lg text-gray-500">{foodData.code}</p> 
+                            <Dot class="w-6 text-gray-500 h-6"/>
+                            <a href={foodData.url} class="text-lg text-blue-500 hover:underline hover:text-blue-600">View Source</a>
+                        </div>
+                    </div>
+                    <img src={foodData.image_url} alt="food" class="rounded-lg w-24 h-24"/>
                 </div>
                <!--- <img src={foodData.image_url} alt="food" class="rounded-lg"/> -->
                 
                 <div class="flex flex-col gap-2 mt-4">
                     <div class="flex flex-row gap-4">
-                        <p><span class="text-5xl font-bold">{foodData["energy-kcal_100g"]}</span> <span class="text-3xl font-semibold">kcal</span></p>
+                        <p><span class="text-5xl font-bold">{foodData.kcal}</span> <span class="text-3xl font-semibold">kcal</span></p>
                     </div>
                 </div>
                 
