@@ -533,7 +533,7 @@ const options = {
   root,
   service_worker: false,
   templates: {
-    app: ({ head, body, assets: assets2, nonce, env }) => '<!doctype html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<link rel="icon" href="' + assets2 + '/favicon.png" />\n		<link rel="stylesheet" href="' + assets2 + '/css/globals.css" />\n		<meta name="viewport" content="width=device-width, initial-scale=1" />\n		<title>Foodlyze</title>\n		<meta name="description" content="Foodlyze is an AI-powered app that scans barcodes to analyze food ingredients, providing a healthiness score and an easy-to-understand explanation. By making food transparency accessible to all, Foodlyze empowers individuals, especially those in low-income communities, to make healthier, more informed choices about their diet."/>\n		<meta name="og:title" content="Foodlyze" />\n		<meta name="og:description" content="Foodlyze is an AI-powered app that scans barcodes to analyze food ingredients, providing a healthiness score and an easy-to-understand explanation. By making food transparency accessible to all, Foodlyze empowers individuals, especially those in low-income communities, to make healthier, more informed choices about their diet." />\n		\n		' + head + '\n	</head>\n	<body data-sveltekit-preload-data="hover">\n		<div style="display: contents">' + body + "</div>\n	</body>\n</html>\n",
+    app: ({ head, body, assets: assets2, nonce, env }) => '<!doctype html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<link rel="icon" href="' + assets2 + '/favicon.png" />\n		<meta name="viewport" content="width=device-width, initial-scale=1" />\n		<title>Foodlyze</title>\n\n		<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">\n		<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">\n		<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">\n		<link rel="manifest" href="/site.webmanifest">\n		\n		<meta name="description" content="Foodlyze is an AI-powered app that scans barcodes to analyze food ingredients, providing a healthiness score and an easy-to-understand explanation. By making food transparency accessible to all, Foodlyze empowers individuals, especially those in low-income communities, to make healthier, more informed choices about their diet."/>\n		<meta name="og:title" content="Foodlyze" />\n		<meta name="og:description" content="Foodlyze is an AI-powered app that scans barcodes to analyze food ingredients, providing a healthiness score and an easy-to-understand explanation. By making food transparency accessible to all, Foodlyze empowers individuals, especially those in low-income communities, to make healthier, more informed choices about their diet." />\n		\n		' + head + '\n	</head>\n	<body data-sveltekit-preload-data="hover">\n		<div style="display: contents">' + body + "</div>\n	</body>\n</html>\n",
     error: ({ status, message }) => '<!doctype html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<title>' + message + `</title>
 
 		<style>
@@ -605,7 +605,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "j9i435"
+  version_hash: "1g7u56i"
 };
 async function get_hooks() {
   let handle;

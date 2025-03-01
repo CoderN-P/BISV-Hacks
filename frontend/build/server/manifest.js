@@ -7,14 +7,14 @@ function __memo(fn) {
 return {
 	appDir: "_app",
 	appPath: "_app",
-	assets: new Set(["css/globals.css","favicon.png","images/foodlyze-high-resolution-logo.png"]),
-	mimeTypes: {".css":"text/css",".png":"image/png"},
+	assets: new Set(["favicon.png","images/android-chrome-192x192.png","images/android-chrome-512x512.png","images/apple-touch-icon.png","images/favicon-16x16.png","images/favicon-32x32.png","images/favicon.ico","images/foodlyze-high-resolution-logo.png"]),
+	mimeTypes: {".png":"image/png"},
 	_: {
-		client: {start:"_app/immutable/entry/start.DSodupeD.js",app:"_app/immutable/entry/app.UwfTVaAY.js",imports:["_app/immutable/entry/start.DSodupeD.js","_app/immutable/chunks/VqLEZLB1.js","_app/immutable/chunks/B9CUAD_v.js","_app/immutable/chunks/CFzP_YVO.js","_app/immutable/entry/app.UwfTVaAY.js","_app/immutable/chunks/B9CUAD_v.js","_app/immutable/chunks/VD4A6Zb7.js","_app/immutable/chunks/DH8YWvmg.js","_app/immutable/chunks/d_3EPzzW.js","_app/immutable/chunks/CFzP_YVO.js"],stylesheets:[],fonts:[],uses_env_dynamic_public:false},
+		client: {start:"_app/immutable/entry/start.BfDA6OXL.js",app:"_app/immutable/entry/app.DJCttR-M.js",imports:["_app/immutable/entry/start.BfDA6OXL.js","_app/immutable/chunks/BsDXvnjp.js","_app/immutable/chunks/0h3qGrbY.js","_app/immutable/chunks/Bl0eu5LI.js","_app/immutable/entry/app.DJCttR-M.js","_app/immutable/chunks/0h3qGrbY.js","_app/immutable/chunks/CMkbe_t9.js","_app/immutable/chunks/CCwIHrBy.js","_app/immutable/chunks/OmnV9Bkp.js","_app/immutable/chunks/Bl0eu5LI.js"],stylesheets:[],fonts:[],uses_env_dynamic_public:false},
 		nodes: [
-			__memo(() => import('./chunks/0-1SwmpFhn.js')),
-			__memo(() => import('./chunks/1-BmVJtNNo.js')),
-			__memo(() => import('./chunks/2-i-t84RUo.js'))
+			__memo(() => import('./chunks/0-DOsKGopq.js')),
+			__memo(() => import('./chunks/1-DRaVbpjn.js')),
+			__memo(() => import('./chunks/2-BYDQbtKM.js'))
 		],
 		routes: [
 			{
